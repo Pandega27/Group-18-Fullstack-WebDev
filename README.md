@@ -12,5 +12,6 @@ To Run the Backend File:
 2. npm i nodemon -g
 3. npm i express body-parser bcrypt cors dotenv gridfs-stream multer multer-gridfs-storage helmet morgan jsonwebtoken mongoose
 4. npm i MongoDB { if theres an error type in ( npm i mongodb --force ) }
-5. npm run dev
+5. npm init -y
+6. npm run dev
 
