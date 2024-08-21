@@ -1,7 +1,7 @@
 # Group-18-Fullstack-WebDev
 
 To Run the Front end File:
-1. Run Terminal and cd frontend
+1. Run Terminal and cd frontend and cd server
 2. npm i react-redux @reduxjs/toolkit redux-persist react-dropzone dotenv formik yup react-router-dom@6 @mui/material @emotion/react @emotion/styled @mui/icons-material
 3. npm init -y
 4. npm start
