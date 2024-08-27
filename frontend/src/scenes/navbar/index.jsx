@@ -19,6 +19,7 @@ import {
   Help,
   Menu,
   Close,
+  Groups,
 } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import { setMode, setLogout } from "../state/index.js";
@@ -86,6 +87,11 @@ const Navbar = () => {
           <Message sx={{ fontSize: "25px" }} />
           <Notifications sx={{ fontSize: "25px" }} />
           <Help sx={{ fontSize: "25px" }} />
+          <IconButton onClick={() => navigate("/groups")}>
+            {" "}
+            {/* Add Group icon and navigation */}
+            <Groups sx={{ fontSize: "25px" }} />
+          </IconButton>
           <FormControl variant="standard" value={fullName}>
             <Select
               value={fullName}
@@ -161,6 +167,11 @@ const Navbar = () => {
             <Message sx={{ fontSize: "25px" }} />
             <Notifications sx={{ fontSize: "25px" }} />
             <Help sx={{ fontSize: "25px" }} />
+            <IconButton onClick={() => navigate("/groups")}>
+              {" "}
+              {/* Add Group icon and navigation */}
+              <Groups sx={{ fontSize: "25px" }} />
+            </IconButton>
             <FormControl variant="standard" value={fullName}>
               <Select
                 value={fullName}
