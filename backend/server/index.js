@@ -12,9 +12,13 @@ import { connectDB } from "./db/db.js";
 import authRoutes from "./routes/auth.js";
 import userRoutes from "./routes/users.js";
 import postRoutes from "./routes/posts.js";
+import notificationRoutes from "./routes/posts.js";
 import { register } from "./controllers/auth.js";
 import { createPost } from "./controllers/posts.js";
 import { verifyToken } from "./middleware/auth.js";
+import http from 'http';
+import { initNotificationService } from './services/notificationService.js';
+import { Server as SocketIoServer } from 'socket.io';
 
 /* CONFIGURATIONS */
 const __filename = fileURLToPath(import.meta.url);
@@ -49,6 +53,32 @@ app.post("/posts", verifyToken, upload.single("picture"), createPost);
 app.use("/auth", authRoutes);
 app.use("/users", userRoutes);
 app.use("/posts", postRoutes);
+app.use("/notifications", notificationRoutes);
+
+
+/* Create HTTP server and integrate with Express */
+const server = http.createServer(app);
+
+/* Initialize Socket.io */
+const io = new SocketIoServer(server);
+
+initNotificationService(io);
+
+/* Handle Socket.io connections */
+io.on('connection', (socket) => {
+  console.log('New client connected:', socket.id);
+
+/* Join room for the specific user (use user ID as room name) */
+ socket.on('joinRoom', (userId) => {
+  socket.join(userId.toString());
+});
+
+/* Handle disconnection */
+  socket.on('disconnect', () => {
+    console.log('Client disconnected');
+  });
+
+});
 
 /* MONGOOSE SETUP */
 
@@ -58,7 +88,8 @@ app.get("/", (req, res) => {
     res.send("hello world");
 });
 
-app.listen(3001, () =>{
+server.listen(3001, () =>{
     connectDB();
     console.log("server is running on port 3001")
 })
+
