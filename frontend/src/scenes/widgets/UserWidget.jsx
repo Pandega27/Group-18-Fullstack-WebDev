@@ -1,25 +1,18 @@
-import {
-  ManageAccountsOutlined,
-  EditOutlined,
-  LocationOnOutlined,
-  WorkOutlineOutlined,
-} from "@mui/icons-material";
-import { Box, Typography, Divider, useTheme } from "@mui/material";
-import UserImage from "../components/UserImage.jsx";
-import FlexBetween from "../components/FlexBetween.jsx";
-import WidgetWrapper from "../components/WidgetWrapper.jsx";
-import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { Container, Row, Col, Image } from "react-bootstrap";
+import { FaUserEdit, FaMapMarkerAlt, FaBriefcase } from "react-icons/fa";
+import WidgetWrapper from "../components/WidgetWrapper.jsx";
+import UserImage from "../components/UserImage.jsx";
+import 'bootstrap/dist/css/bootstrap.min.css'
+import "../css/UserWidget.css"
+
 
 const UserWidget = ({ userId, picturePath }) => {
   const [user, setUser] = useState(null);
-  const { palette } = useTheme();
   const navigate = useNavigate();
   const token = useSelector((state) => state.token);
-  const dark = palette.neutral.dark;
-  const medium = palette.neutral.medium;
-  const main = palette.neutral.main;
 
   const getUser = async () => {
     const response = await fetch(`http://localhost:3001/users/${userId}`, {
@@ -49,103 +42,105 @@ const UserWidget = ({ userId, picturePath }) => {
   } = user;
 
   return (
+    <div className="userwidget">
     <WidgetWrapper>
       {/* FIRST ROW */}
-      <FlexBetween
-        gap="0.5rem"
-        pb="1.1rem"
-        onClick={() => navigate(`/profile/${userId}`)}
-      >
-        <FlexBetween gap="1rem">
+      <Container className="mb-3" style={{paddingTop:"20px"}}>
+        <div className="d-flex mb-2">
+          <div >
           <UserImage image={picturePath} />
-          <Box>
-            <Typography
-              variant="h4"
-              color={dark}
-              fontWeight="500"
-              sx={{
-                "&:hover": {
-                  color: palette.primary.light,
-                  cursor: "pointer",
-                },
-              }}
-            >
-              {firstName} {lastName}
-            </Typography>
-            <Typography color={medium}>{friends.length} friends</Typography>
-          </Box>
-        </FlexBetween>
-        <ManageAccountsOutlined />
-      </FlexBetween>
+            <div>
+              <h4 className="mb-0 text"
+                style={{ color: "grey", fontWeight: 500, cursor: 'pointer', marginTop:"10px", marginBottom:"-1px"}}
+                onClick={() => navigate(`/profile/${userId}`)}
+              >
+                {firstName} {lastName}
+              </h4>
+              <p style={{ color: "grey" }}>{friends.length} friends </p>
+            </div>
 
-      <Divider />
+          </div>
+        </div>
+      </Container>
+
+      <hr />
 
       {/* SECOND ROW */}
-      <Box p="1rem 0">
-        <Box display="flex" alignItems="center" gap="1rem" mb="0.5rem">
-          <LocationOnOutlined fontSize="large" sx={{ color: main }} />
-          <Typography color={medium}>{location}</Typography>
-        </Box>
-        <Box display="flex" alignItems="center" gap="1rem">
-          <WorkOutlineOutlined fontSize="large" sx={{ color: main }} />
-          <Typography color={medium}>{occupation}</Typography>
-        </Box>
-      </Box>
+      <Container className="my-3">
+        <div className="d-flex mb-2" style={{padding:"10px 0 0 0"}}>
+          <div className="col-1">
+            <FaMapMarkerAlt size={24} />
+          </div>
+          <div>
+            <p className="text">{location}</p>
+          </div>
+        </div>
+        <div className="d-flex mb-2" >
+        <div className="col-1">
+            <FaBriefcase size={24} />
+          </div>
+          <div>
+            <p className="text">{occupation}</p>
+          </div>
+        </div>
+      </Container>
 
-      <Divider />
+      <hr />
 
       {/* THIRD ROW */}
-      <Box p="1rem 0">
-        <FlexBetween mb="0.5rem">
-          <Typography color={medium}>Who's viewed your profile</Typography>
-          <Typography color={main} fontWeight="500">
-            {viewedProfile}
-          </Typography>
-        </FlexBetween>
-        <FlexBetween>
-          <Typography color={medium}>Impressions of your post</Typography>
-          <Typography color={main} fontWeight="500">
-            {impressions}
-          </Typography>
-        </FlexBetween>
-      </Box>
+      <Container className="my-3">
+        <div className="d-flex mb-2 justify-content-between" style={{padding:"10px 0 0 0"}}>
+          <div>
+            <p className="text">Who's viewed your profile</p>
+          </div>
+          <div className="col-1">
+            <strong>{viewedProfile}</strong>
+          </div>
+        </div>
+        <div className="d-flex mb-2 justify-content-between">
+          <div>
+            <p className="text">Impressions of your post</p>
+          </div>
+          <div className="col-1">
+            <strong>{impressions}</strong>
+          </div>
+        </div>
+      </Container>
 
-      <Divider />
+      <hr />
 
       {/* FOURTH ROW */}
-      <Box p="1rem 0">
-        <Typography fontSize="1rem" color={main} fontWeight="500" mb="1rem">
-          Social Profiles
-        </Typography>
-
-        <FlexBetween gap="1rem" mb="0.5rem">
-          <FlexBetween gap="1rem">
-            <img src="../assets/twitter.png" alt="twitter" />
-            <Box>
-              <Typography color={main} fontWeight="500">
-                Twitter
-              </Typography>
-              <Typography color={medium}>Social Network</Typography>
-            </Box>
-          </FlexBetween>
-          <EditOutlined sx={{ color: main }} />
-        </FlexBetween>
-
-        <FlexBetween gap="1rem">
-          <FlexBetween gap="1rem">
-            <img src="../assets/linkedin.png" alt="linkedin" />
-            <Box>
-              <Typography color={main} fontWeight="500">
-                Linkedin
-              </Typography>
-              <Typography color={medium}>Network Platform</Typography>
-            </Box>
-          </FlexBetween>
-          <EditOutlined sx={{ color: main }} />
-        </FlexBetween>
-      </Box>
+      <Container className="my-3">
+        <h5 className="mb-3">Social Profiles</h5>
+        <Row className="align-items-center mb-2">
+          <Col xs="auto">
+            <Image src="../assets/twitter.png" rounded style={{ width: "30px", height: "30px" }} />
+          </Col>
+          <Col>
+            <strong>Twitter</strong>
+            <p> Twitter @email </p>
+          </Col>
+          <Col xs="auto">
+            <FaUserEdit />
+          </Col>
+        </Row>
+        <Row className="align-items-center">
+          <Col xs="auto">
+            <Image src="../assets/linkedin.png" rounded style={{ width: "30px", height: "30px" }} />
+          </Col>
+          <Col>
+            <strong>Linkedin</strong>
+            <p> LinkedIn @email </p>
+          </Col>
+          <Col xs="auto">
+            <FaUserEdit />
+          </Col>
+        </Row>
+      </Container>
     </WidgetWrapper>
+    </div>
   );
 };
+
 
 export default UserWidget;

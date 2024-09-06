@@ -1,23 +1,15 @@
-import { PersonAddOutlined, PersonRemoveOutlined } from "@mui/icons-material";
-import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setFriends } from "../state";
-import FlexBetween from "./FlexBetween.jsx";
 import UserImage from "./UserImage.jsx";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
   const dispatch = useDispatch();
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
   const { _id } = useSelector((state) => state.user);
   const token = useSelector((state) => state.token);
   const friends = useSelector((state) => state.user.friends);
-
-  const { palette } = useTheme();
-  const primaryLight = palette.primary.light;
-  const primaryDark = palette.primary.dark;
-  const main = palette.neutral.main;
-  const medium = palette.neutral.medium;
 
   const isFriend = Array.isArray(friends) && friends.find((friend) => friend._id === friendId);
 
@@ -37,44 +29,40 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
   };
 
   return (
-    <FlexBetween>
-      <FlexBetween gap="1rem">
+    <div className="d-flex justify-content-between align-items-center">
+      <div className="d-flex align-items-center gap-3">
         <UserImage image={userPicturePath} size="55px" />
-        <Box
+        <div
           onClick={() => {
             navigate(`/profile/${friendId}`);
             navigate(0);
           }}
+          style={{ cursor: "pointer" }}
         >
-          <Typography
-            color={main}
-            variant="h5"
-            fontWeight="500"
-            sx={{
-              "&:hover": {
-                color: palette.primary.light,
-                cursor: "pointer",
-              },
-            }}
+          <h5
+            className="mb-0" // This replaces 'main' from the MUI theme
+            onMouseOver={(e) => (e.target.style.color = "#5a6268")} // This replaces the hover effect
+            onMouseOut={(e) => (e.target.style.color = "")}
           >
             {name}
-          </Typography>
-          <Typography color={medium} fontSize="0.75rem">
+          </h5>
+          <p className="mb-0" style={{ fontSize: "0.75rem" }}>
             {subtitle}
-          </Typography>
-        </Box>
-      </FlexBetween>
-      <IconButton
+          </p>
+        </div>
+      </div>
+      <button
+        className="btn btn-light"
         onClick={() => patchFriend()}
-        sx={{ backgroundColor: primaryLight, p: "0.6rem" }}
+        style={{ padding: "0.6rem", backgroundColor: "#d1e7dd" }} // This replaces 'primaryLight' from the MUI theme
       >
         {isFriend ? (
-          <PersonRemoveOutlined sx={{ color: primaryDark }} />
+          <i className="bi bi-person-dash" style={{ color: "#0c5460" }}></i> // This replaces 'PersonRemoveOutlined'
         ) : (
-          <PersonAddOutlined sx={{ color: primaryDark }} />
+          <i className="bi bi-person-plus" style={{ color: "#0c5460" }}></i> // This replaces 'PersonAddOutlined'
         )}
-      </IconButton>
-    </FlexBetween>
+      </button>
+    </div>
   );
 };
 

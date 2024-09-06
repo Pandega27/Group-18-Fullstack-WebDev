@@ -1,13 +1,13 @@
-import { Box, Typography, useTheme } from "@mui/material";
-import Friend from "../components/Friend.jsx";
-import WidgetWrapper from "../components/WidgetWrapper.jsx";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import Friend from "../components/Friend.jsx";
+import WidgetWrapper from "../components/WidgetWrapper.jsx";
 import { setFriends } from "../state";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import '../css/FriendlistWidget.css'
 
 const FriendListWidget = ({ userId }) => {
   const dispatch = useDispatch();
-  const { palette } = useTheme();
   const token = useSelector((state) => state.token);
   let friends = useSelector((state) => state.user.friends) || [];
 
@@ -35,16 +35,10 @@ const FriendListWidget = ({ userId }) => {
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
+    <div className="friendlist">
     <WidgetWrapper>
-      <Typography
-        color={palette.neutral.dark}
-        variant="h5"
-        fontWeight="500"
-        sx={{ mb: "1.5rem" }}
-      >
-        Friend List
-      </Typography>
-      <Box display="flex" flexDirection="column" gap="1.5rem">
+      <h5 className="mb-4 font-weight-bold" style={{color:"#CFCFC4"}}>Friend List</h5>
+      <div className="d-flex flex-column gap-4">
         {friends.length > 0 ? (
           friends.map((friend) => (
             <Friend
@@ -56,10 +50,11 @@ const FriendListWidget = ({ userId }) => {
             />
           ))
         ) : (
-          <Typography>No friends found.</Typography>
+          <p>No friends found.</p>
         )}
-      </Box>
+      </div>
     </WidgetWrapper>
+    </div>
   );
 };
 

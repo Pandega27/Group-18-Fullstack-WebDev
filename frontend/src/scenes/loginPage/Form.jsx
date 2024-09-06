@@ -1,20 +1,11 @@
 import { useState } from "react";
-import {
-  Box,
-  Button,
-  TextField,
-  useMediaQuery,
-  Typography,
-  useTheme,
-} from "@mui/material";
-import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { Formik } from "formik";
 import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setLogin } from "../state";
 import Dropzone from "react-dropzone";
-import FlexBetween from "../components/FlexBetween";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 const registerSchema = yup.object().shape({
   firstName: yup.string().required("required"),
@@ -48,15 +39,12 @@ const initialValuesLogin = {
 
 const Form = () => {
   const [pageType, setPageType] = useState("login");
-  const { palette } = useTheme();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const isNonMobile = useMediaQuery("(min-width:600px)");
   const isLogin = pageType === "login";
   const isRegister = pageType === "register";
 
   const register = async (values, onSubmitProps) => {
-    // this allows us to send form info with image
     const formData = new FormData();
     for (let value in values) {
       formData.append(value, values[value]);
@@ -118,67 +106,80 @@ const Form = () => {
         setFieldValue,
         resetForm,
       }) => (
-        <form onSubmit={handleSubmit}>
-          <Box
-            display="grid"
-            gap="30px"
-            gridTemplateColumns="repeat(4, minmax(0, 1fr))"
-            sx={{
-              "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
-            }}
-          >
+        <form onSubmit={handleSubmit} className="container mt-5">
+          <div className="row g-3">
             {isRegister && (
               <>
-                <TextField
-                  label="First Name"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  value={values.firstName}
-                  name="firstName"
-                  error={
-                    Boolean(touched.firstName) && Boolean(errors.firstName)
-                  }
-                  helperText={touched.firstName && errors.firstName}
-                  sx={{ gridColumn: "span 2" }}
-                />
-                <TextField
-                  label="Last Name"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  value={values.lastName}
-                  name="lastName"
-                  error={Boolean(touched.lastName) && Boolean(errors.lastName)}
-                  helperText={touched.lastName && errors.lastName}
-                  sx={{ gridColumn: "span 2" }}
-                />
-                <TextField
-                  label="Location"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  value={values.location}
-                  name="location"
-                  error={Boolean(touched.location) && Boolean(errors.location)}
-                  helperText={touched.location && errors.location}
-                  sx={{ gridColumn: "span 4" }}
-                />
-                <TextField
-                  label="Occupation"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  value={values.occupation}
-                  name="occupation"
-                  error={
-                    Boolean(touched.occupation) && Boolean(errors.occupation)
-                  }
-                  helperText={touched.occupation && errors.occupation}
-                  sx={{ gridColumn: "span 4" }}
-                />
-                <Box
-                  gridColumn="span 4"
-                  border={`1px solid ${palette.neutral.medium}`}
-                  borderRadius="5px"
-                  p="1rem"
-                >
+                <div className="col-md-6">
+                  <label className="form-label" style={{color:"white"}}>First Name</label>
+                  <input
+                    type="text"
+                    className={`form-control ${
+                      touched.firstName && errors.firstName
+                        ? "is-invalid"
+                        : ""
+                    }`}
+                    name="firstName"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    value={values.firstName}
+                  />
+                  <div className="invalid-feedback">
+                    {touched.firstName && errors.firstName}
+                  </div>
+                </div>
+                <div className="col-md-6">
+                  <label className="form-label" style={{color:"white"}}>Last Name</label>
+                  <input
+                    type="text"
+                    className={`form-control ${
+                      touched.lastName && errors.lastName ? "is-invalid" : ""
+                    }`}
+                    name="lastName"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    value={values.lastName}
+                  />
+                  <div className="invalid-feedback">
+                    {touched.lastName && errors.lastName}
+                  </div>
+                </div>
+                <div className="col-md-12" style={{color:"white"}}>
+                  <label className="form-label">Location</label>
+                  <input
+                    type="text"
+                    className={`form-control ${
+                      touched.location && errors.location ? "is-invalid" : ""
+                    }`}
+                    name="location"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    value={values.location}
+                  />
+                  <div className="invalid-feedback">
+                    {touched.location && errors.location}
+                  </div>
+                </div>
+                <div className="col-md-12" style={{color:"white"}}>
+                  <label className="form-label">Occupation</label>
+                  <input
+                    type="text"
+                    className={`form-control ${
+                      touched.occupation && errors.occupation
+                        ? "is-invalid"
+                        : ""
+                    }`}
+                    name="occupation"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    value={values.occupation}
+                  />
+                  <div className="invalid-feedback">
+                    {touched.occupation && errors.occupation}
+                  </div>
+                </div>
+                <div className="col-md-12">
+                  <label className="form-label">Picture</label>
                   <Dropzone
                     acceptedFiles=".jpg,.jpeg,.png"
                     multiple={false}
@@ -187,85 +188,82 @@ const Form = () => {
                     }
                   >
                     {({ getRootProps, getInputProps }) => (
-                      <Box
+                      <div
                         {...getRootProps()}
-                        border={`2px dashed ${palette.primary.main}`}
-                        p="1rem"
-                        sx={{ "&:hover": { cursor: "pointer" } }}
+                        className="border rounded p-3 text-center"
+                        style={{ cursor: "pointer", color:"#39FF14" }}
                       >
                         <input {...getInputProps()} />
                         {!values.picture ? (
-                          <p>Add Picture Here</p>
+                          <p style={{padding:"10px 0 0 0"}}>Add Picture Here</p>
                         ) : (
-                          <FlexBetween>
-                            <Typography>{values.picture.name}</Typography>
-                            <EditOutlinedIcon />
-                          </FlexBetween>
+                          <div className="d-flex justify-content-between">
+                            <span>{values.picture.name}</span>
+                            <i className="bi bi-pencil-square"></i>
+                          </div>
                         )}
-                      </Box>
+                      </div>
                     )}
                   </Dropzone>
-                </Box>
+                </div>
               </>
             )}
 
-            <TextField
-              label="Email"
-              onBlur={handleBlur}
-              onChange={handleChange}
-              value={values.email}
-              name="email"
-              error={Boolean(touched.email) && Boolean(errors.email)}
-              helperText={touched.email && errors.email}
-              sx={{ gridColumn: "span 4" }}
-            />
-            <TextField
-              label="Password"
-              type="password"
-              onBlur={handleBlur}
-              onChange={handleChange}
-              value={values.password}
-              name="password"
-              error={Boolean(touched.password) && Boolean(errors.password)}
-              helperText={touched.password && errors.password}
-              sx={{ gridColumn: "span 4" }}
-            />
-          </Box>
+            <div className="col-md-12">
+              <label className="form-label" style={{color:"white"}}>Email</label>
+              <input
+                type="email"
+                className={`form-control ${
+                  touched.email && errors.email ? "is-invalid" : ""
+                }`}
+                name="email"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.email}
+              />
+              <div className="invalid-feedback">
+                {touched.email && errors.email}
+              </div>
+            </div>
 
-          {/* BUTTONS */}
-          <Box>
-            <Button
-              fullWidth
+            <div className="col-md-12">
+              <label className="form-label" style={{color:"white"}}>Password</label>
+              <input
+                type="password"
+                className={`form-control ${
+                  touched.password && errors.password ? "is-invalid" : ""
+                }`}
+                name="password"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.password}
+              />
+              <div className="invalid-feedback">
+                {touched.password && errors.password}
+              </div>
+            </div>
+          </div>
+
+          <div className="d-grid mt-4" style={{padding:"20px 0 0 0"}}>
+            <button
               type="submit"
-              sx={{
-                m: "2rem 0",
-                p: "1rem",
-                backgroundColor: palette.primary.main,
-                color: palette.background.alt,
-                "&:hover": { color: palette.primary.main },
-              }}
+              className="btn btn-primary btn-lg" style={{backgroundColor:"#39FF14", color:"black"}}
             >
               {isLogin ? "LOGIN" : "REGISTER"}
-            </Button>
-            <Typography
-              onClick={() => {
-                setPageType(isLogin ? "register" : "login");
-                resetForm();
-              }}
-              sx={{
-                textDecoration: "underline",
-                color: palette.primary.main,
-                "&:hover": {
-                  cursor: "pointer",
-                  color: palette.primary.light,
-                },
-              }}
-            >
-              {isLogin
-                ? "Don't have an account? Sign Up here."
-                : "Already have an account? Login here."}
-            </Typography>
-          </Box>
+            </button>
+          </div>
+          <p
+            className="text-center mt-3"
+            style={{ cursor: "pointer", textDecoration: "underline", color:"#39FF14" }}
+            onClick={() => {
+              setPageType(isLogin ? "register" : "login");
+              resetForm();
+            }}
+          >
+            {isLogin
+              ? "Don't have an account? Sign Up here."
+              : "Already have an account? Login here."}
+          </p>
         </form>
       )}
     </Formik>

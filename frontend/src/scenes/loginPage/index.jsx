@@ -1,35 +1,29 @@
-import { Box, Typography, useTheme, useMediaQuery } from "@mui/material";
-import Form from "./Form.jsx";
+import React from 'react';
+import { Container, Row, Col, Card } from 'react-bootstrap';
+import Form from './Form.jsx';
 
 const LoginPage = () => {
-  const theme = useTheme();
-  const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
-  return (
-    <Box>
-      <Box
-        width="100%"
-        backgroundColor={theme.palette.background.alt}
-        p="1rem 6%"
-        textAlign="center"
-      >
-        <Typography fontWeight="bold" fontSize="32px" color="primary">
-          WELCOME TO META BABY
-        </Typography>
-      </Box>
+  const isNonMobileScreens = window.matchMedia('(min-width: 1000px)').matches;
 
-      <Box
-        width={isNonMobileScreens ? "50%" : "93%"}
-        p="2rem"
-        m="2rem auto"
-        borderRadius="1.5rem"
-        backgroundColor={theme.palette.background.alt}
-      >
-        <Typography fontWeight="500" variant="h5" sx={{ mb: "1.5rem" }}>
-          Welcome to META BABY, the Social Media for META BABY!
-        </Typography>
-        <Form />
-      </Box>
-    </Box>
+  return (
+    <div>
+      <div className="text-center py-3 bg-dark">
+        <h1 className="font-weight-bold" style={{color:"#39FF14"}}> INSTAKILO</h1>
+      </div>
+
+      <Container>
+        <Row className="justify-content-center my-4">
+          <Col md={isNonMobileScreens ? 6 : 11}>
+            <Card className="p-4 rounded-3 bg-dark">
+              <h5 className="font-weight-bold text-center" style={{color:"#39FF14", padding:"10px 0 0 0"}} >
+                Welcome to INSTAKILO! 
+              </h5>
+              <Form />
+            </Card>
+          </Col>
+        </Row>
+      </Container>
+    </div>
   );
 };
 

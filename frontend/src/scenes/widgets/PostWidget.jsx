@@ -1,16 +1,9 @@
-import {
-  ChatBubbleOutlineOutlined,
-  FavoriteBorderOutlined,
-  FavoriteOutlined,
-  ShareOutlined,
-} from "@mui/icons-material";
-import { Box, Divider, IconButton, Typography, useTheme } from "@mui/material";
-import FlexBetween from "../components/FlexBetween.jsx";
-import Friend from "../components/Friend.jsx";
-import WidgetWrapper from "../components/WidgetWrapper.jsx";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPost } from "../state";
+import Friend from "../components/Friend.jsx";
+import WidgetWrapper from "../components/WidgetWrapper.jsx";
+import "../css/PostWidget.css"
 
 const PostWidget = ({
   postId,
@@ -30,10 +23,6 @@ const PostWidget = ({
   const isLiked = Boolean(likes[loggedInUserId]);
   const likeCount = Object.keys(likes).length;
 
-  const { palette } = useTheme();
-  const main = palette.neutral.main;
-  const primary = palette.primary.main;
-
   const patchLike = async () => {
     const response = await fetch(`http://localhost:3001/posts/${postId}/like`, {
       method: "PATCH",
@@ -48,65 +37,67 @@ const PostWidget = ({
   };
 
   return (
-    <WidgetWrapper m="2rem 0">
+    <div className="postwidget">
+    <WidgetWrapper className="my-4">
       <Friend
         friendId={postUserId}
-        name={name}
+        name={name} 
         subtitle={location}
         userPicturePath={userPicturePath}
       />
-      <Typography color={main} sx={{ mt: "1rem" }}>
+      <p className="mt-3 text" style={{fontSize:"15px"}}>
         {description}
-      </Typography>
+      </p>
       {picturePath && (
         <img
-          width="100%"
-          height="auto"
+          className="img-fluid rounded"
           alt="post"
-          style={{ borderRadius: "0.75rem", marginTop: "0.75rem" }}
           src={`http://localhost:3001/assets/${picturePath}`}
         />
       )}
-      <FlexBetween mt="0.25rem">
-        <FlexBetween gap="1rem">
-          <FlexBetween gap="0.3rem">
-            <IconButton onClick={patchLike}>
+      <div className="d-flex justify-content-between align-items-center mt-2">
+        <div className="d-flex align-items-center gap-3">
+          <div className="d-flex align-items-center gap-2">
+            <button className="btn btn-link p-0" onClick={patchLike} style={{color:'white'}}>
               {isLiked ? (
-                <FavoriteOutlined sx={{ color: primary }} />
+                <i className="bi bi-heart-fill" style={{color:'red'}}></i>
               ) : (
-                <FavoriteBorderOutlined />
+                <i className="bi bi-heart" ></i>
               )}
-            </IconButton>
-            <Typography>{likeCount}</Typography>
-          </FlexBetween>
+            </button>
+            <span>{likeCount}</span>
+          </div>
 
-          <FlexBetween gap="0.3rem">
-            <IconButton onClick={() => setIsComments(!isComments)}>
-              <ChatBubbleOutlineOutlined />
-            </IconButton>
-            <Typography>{comments.length}</Typography>
-          </FlexBetween>
-        </FlexBetween>
+          <div className="d-flex align-items-center gap-2">
+            <button
+              className="btn btn-link p-0"
+              onClick={() => setIsComments(!isComments)}
+            >
+              <i className="bi bi-chat" style={{color:"white"}}></i>
+            </button>
+            <span>{comments.length}</span>
+          </div>
+        </div>
 
-        <IconButton>
-          <ShareOutlined />
-        </IconButton>
-      </FlexBetween>
+        <button className="btn btn-link p-0">
+          <i className="bi bi-share"></i>
+        </button>
+      </div>
       {isComments && (
-        <Box mt="0.5rem">
+        <div className="mt-2">
           {comments.map((comment, i) => (
-            <Box key={`${name}-${i}`}>
-              <Divider />
-              <Typography sx={{ color: main, m: "0.5rem 0", pl: "1rem" }}>
-                {comment}
-              </Typography>
-            </Box>
+            <div key={`${name}-${i}`}>
+              <hr />
+              <p className="text-muted m-2 pl-3">{comment}</p>
+            </div>
           ))}
-          <Divider />
-        </Box>
+          <hr />
+        </div>
       )}
     </WidgetWrapper>
+    </div>
   );
 };
+
 
 export default PostWidget;

@@ -1,38 +1,40 @@
-import { Typography, useTheme } from "@mui/material";
 import FlexBetween from "../components/FlexBetween.jsx";
 import WidgetWrapper from "../components/WidgetWrapper.jsx";
+import 'bootstrap/dist/css/bootstrap.min.css'
+import "../css/AdvertWidget.css"
 
 
 const AdvertWidget = () => {
-  const { palette } = useTheme();
-  const dark = palette.neutral.dark;
-  const main = palette.neutral.main;
-  const medium = palette.neutral.medium;
-
   return (
+    <div className="advertWidget">
     <WidgetWrapper>
       <FlexBetween>
-        <Typography color={dark} variant="h5" fontWeight="500">
+        <div style={{fontSize:"15px", fontWeight:"500", padding:"10px 10px 10px 10px "}}>
           Sponsored
-        </Typography>
-        <Typography color={medium}></Typography>
+        </div>
       </FlexBetween>
       <img
         width="100%"
         height="auto"
         alt="advert"
-        src="./assets/cat.png"
+        src="/frontend/public/assets/advert.png"
         style={{ borderRadius: "0.75rem", margin: "0.75rem 0" }}
       />
       <FlexBetween>
-        <Typography color={main}>Get Your Nike Shoes</Typography>
-        <Typography color={medium}>Nike.com.vn</Typography>
+        <div style={{padding:"10px 10px 10px 10px "}}>
+          Get Your Nike Shoes
+          <br></br>
+          Nike.com.vn
+        </div>
+        
       </FlexBetween>
-      <Typography color={medium} m="0.5rem 0">
+      <div style={{fontWeight:"500", padding:"10px 10px 10px 10px "}}>
         NIKE JUST DO IT!
-      </Typography>
+      </div>
     </WidgetWrapper>
+    </div>
   );
 };
+
 
 export default AdvertWidget;

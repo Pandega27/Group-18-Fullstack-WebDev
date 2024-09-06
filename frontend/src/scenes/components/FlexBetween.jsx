@@ -1,10 +1,10 @@
-import { Box } from "@mui/material";
-import { styled } from "@mui/system";
+import React from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css'
 
-const FlexBetween = styled(Box)({
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
-});
+const FlexBetween = ({ children }) => (
+  <div className="d-flex justify-content-between align-items-center">
+    {children}
+  </div>
+);
 
 export default FlexBetween;
