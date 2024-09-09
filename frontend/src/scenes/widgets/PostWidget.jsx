@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setPost } from "../state";
+import { setPost, removePost } from "../state"; 
 import Friend from "../components/Friend.jsx";
 import WidgetWrapper from "../components/WidgetWrapper.jsx";
 import "../css/PostWidget.css"
@@ -41,7 +41,7 @@ const PostWidget = ({
 
   // Delete post function (only for admin)
   const deletePost = async () => {
-    console.log("Attempting to delete post:", postId);
+    console.log("Delete button clicked"); // Check if the function is invoked
     try {
       const response = await fetch(`http://localhost:3001/posts/${postId}`, {
         method: "DELETE",
@@ -49,11 +49,11 @@ const PostWidget = ({
           Authorization: `Bearer ${token}`,
         },
       });
-  
+ 
+      console.log("Server response received"); // Check if the server responds
       if (response.ok) {
         console.log("Post deleted successfully");
-        // Dispatch an action to remove the post from the Redux state
-        // dispatch(removePost(postId));
+        dispatch(removePost(postId));
       } else {
         console.log("Failed to delete the post. Status:", response.status);
       }
@@ -88,7 +88,7 @@ const PostWidget = ({
               {isLiked ? (
                 <i className="bi bi-heart-fill" style={{color:'red'}}></i>
               ) : (
-                <i className="bi bi-heart" ></i>
+                <i className="bi bi-heart" style={{color:'red'}} ></i>
               )}
             </button>
             <span>{likeCount}</span>

@@ -37,7 +37,7 @@ const FriendListWidget = ({ userId }) => {
   return (
     <div className="friendlist">
     <WidgetWrapper>
-      <h5 className="mb-4 font-weight-bold" style={{color:"#CFCFC4"}}>Friend List</h5>
+      <h5 className="mb-4 font-weight-bold text">Friend List</h5>
       <div className="d-flex flex-column gap-4">
         {friends.length > 0 ? (
           friends.map((friend) => (

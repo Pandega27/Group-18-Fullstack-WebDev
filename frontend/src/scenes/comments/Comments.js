@@ -9,7 +9,7 @@ function Comment({ comment, deleteComment, likeComment }) {
           alt={`${comment.firstName}'s profile`}
           className="profile-picture"
         />
-        <strong>{comment.firstName} {comment.lastName}</strong>
+        <strong style={{color:"black"}}>{comment.firstName} {comment.lastName}</strong>
       </div>
       <p className="comment-text">{comment.text}</p>
     </div>
