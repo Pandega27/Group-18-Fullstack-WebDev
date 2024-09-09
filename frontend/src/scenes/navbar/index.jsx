@@ -6,6 +6,8 @@ import 'bootstrap-icons/font/bootstrap-icons.css'
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'
 import io from 'socket.io-client'
 import axios from 'axios' // Import Axios for API calls
+import { UseContext } from 'react'
+import { setFriends } from '../state'
 
 const Navbar = () => {
   const [isMobileMenuToggled, setIsMobileMenuToggled] = useState(false)
@@ -27,9 +29,15 @@ const Navbar = () => {
   // Fetch notifications from the server when the component mounts
   useEffect(() => {
     const fetchNotifications = async () => {
+      const { token } = UseContext(setFriends)
       try {
         const response = await axios.get(
-          `http://localhost:3001/users/${user._id}`
+          `http://localhost:3001/users/${user._id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
         )
         setNotifications(response.data)
       } catch (error) {
@@ -42,7 +50,7 @@ const Navbar = () => {
 
   // Socket.io setup
   useEffect(() => {
-    const socket = io('http://localhost:3000') // Connect to the backend server
+    const socket = io('http://localhost:3001') // Connect to the backend server
 
     // Join the user's room using their user ID
     socket.emit('joinRoom', user._id)
