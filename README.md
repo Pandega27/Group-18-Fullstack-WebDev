@@ -6,7 +6,7 @@ To Run the Front end File:
 
 1. Run Terminal
 2. cd frontend 
-3. type in "npm i react-redux @reduxjs/toolkit redux-persist react-dropzone dotenv formik yup react-router-dom@6 react-icons @fortawesome/react-fontawesome @fortawesome/free-solid-svg-icons bootstrap-icons bootstrap @popperjs/core react-bootstrap react-bootstrap-icons"
+3. type in "npm i react-redux @reduxjs/toolkit redux-persist react-dropzone dotenv formik yup react-router-dom@6 react-icons @fortawesome/react-fontawesome @fortawesome/free-solid-svg-icons bootstrap-icons bootstrap @popperjs/core react-bootstrap react-bootstrap-icons axios socket.io-client"
 4. next type in "npm I"
 5. npm start
 
