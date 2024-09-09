@@ -17,3 +17,7 @@ To Run the Backend File:
 3. then in the backend/server folder type in "npm i nodemon -g"
 4. to install dependencies "npm i express body-parser bcrypt cors dotenv gridfs-stream multer multer-gridfs-storage helmet morgan jsonwebtoken mongoose mongodb socket.io socket.io-client --force"
 5. npm run dev
+
+For ADMIN Account
+Email : hi@gmail.com 
+Pass : 12345678
