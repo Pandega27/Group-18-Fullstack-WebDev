@@ -1,7 +1,5 @@
 # Group-18-Fullstack-WebDev
 
-In the root run: npm i axios
-
 To Run the Front end File:
 
 1. Run Terminal
