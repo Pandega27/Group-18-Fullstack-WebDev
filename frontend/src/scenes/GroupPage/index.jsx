@@ -5,7 +5,7 @@ import { Button } from "react-bootstrap";
 import { Calendar, Eye, Lock, Tag, Share, GeoAlt } from "react-bootstrap-icons";
 import Navbar from "../navbar";
 import "bootstrap/dist/css/bootstrap.min.css";
-
+ 
 const GroupPage = () => {
   const mode = useSelector((state) => state.mode);
   const { groupName } = useParams();
@@ -18,7 +18,7 @@ const GroupPage = () => {
     createdOn: "",
     isPrivate: false,
   });
-
+ 
   useEffect(() => {
     const fetchGroup = async () => {
       try {
@@ -32,15 +32,15 @@ const GroupPage = () => {
         console.error("Error fetching group data:", error);
       }
     };
-
+ 
     fetchGroup();
   }, [groupName]);
-
+ 
   // Define the handleJoinGroup function
   const handleJoinGroup = () => {
     navigate(`/groups/${groupName}/posts`); // Navigate to posts page
   };
-
+ 
   return (
     <div>
       <Navbar />
@@ -63,7 +63,7 @@ const GroupPage = () => {
             backgroundPosition: "center",
           }}
         ></div>
-
+ 
         {/* Group Details */}
         <div
           className="p-4 rounded shadow-lg"
@@ -75,7 +75,7 @@ const GroupPage = () => {
         >
           <h2 className="text text-center mb-4">{group.groupName}</h2>
           <p className="text text-center mb-4">{group.description}</p>
-
+ 
           {/* Join Group & Share Buttons */}
           <div className="d-flex justify-content-center mb-4">
             <Button className="me-2" variant="primary" onClick={handleJoinGroup}>
@@ -86,7 +86,7 @@ const GroupPage = () => {
               Share
             </Button>
           </div>
-
+ 
           {/* Group Info */}
           <div className="text d-flex flex-column align-items-center gap-2">
             <div className="d-flex align-items-center gap-2">
@@ -117,5 +117,6 @@ const GroupPage = () => {
     </div>
   );
 };
-
+ 
 export default GroupPage;
+ 
