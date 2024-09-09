@@ -3,7 +3,7 @@ const router = express.Router()
 const Notification = require('../models/Notification')
 
 // Get notifications for a user
-router.get('/users/:id', async (req, res) => {
+router.get('/users/:userId', async (req, res) => {
   try {
     const notifications = await Notification.find({
       userId: req.params.userId, // Accessing the userId from URL parameters
@@ -15,7 +15,7 @@ router.get('/users/:id', async (req, res) => {
 })
 
 // Mark notifications as read for a user
-router.put('/users/:id', async (req, res) => {
+router.put('/users/:userId', async (req, res) => {
   try {
     await Notification.updateMany(
       { userId: req.params.userId, isRead: false }, // Filtering notifications by userId and unread status

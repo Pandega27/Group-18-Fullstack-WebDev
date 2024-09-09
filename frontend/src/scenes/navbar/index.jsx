@@ -5,9 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import 'bootstrap-icons/font/bootstrap-icons.css'
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'
 import io from 'socket.io-client'
-import axios from 'axios' // Import Axios for API calls
-import { UseContext } from 'react'
-import { setFriends } from '../state'
+import axios from 'axios'
 
 const Navbar = () => {
   const [isMobileMenuToggled, setIsMobileMenuToggled] = useState(false)
@@ -16,9 +14,12 @@ const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false) // State for dropdown visibility
   const dispatch = useDispatch()
   const navigate = useNavigate()
+
+  // Access user and token from Redux store
   const user = useSelector((state) => state.user)
+  const token = useSelector((state) => state.token)
   const isNonMobileScreens = window.innerWidth >= 1000
-  const fullName = `${user.firstName} ${user.lastName}`
+  const fullName = user ? `${user.firstName} ${user.lastName}` : ''
 
   // Toggle dark mode
   const toggleDarkMode = () => {
@@ -27,43 +28,43 @@ const Navbar = () => {
   }
 
   // Fetch notifications from the server when the component mounts
-  useEffect(() => {
-    const fetchNotifications = async () => {
-      const { token } = UseContext(setFriends)
-      try {
-        const response = await axios.get(
-          `http://localhost:3001/users/${user._id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        )
-        setNotifications(response.data)
-      } catch (error) {
-        console.error('Failed to fetch notifications', error)
-      }
-    }
+  const fetchNotifications = async () => {
+    if (!token || !user._id) return // Ensure token and user._id exist
 
+    try {
+      const response = await axios.get(
+        `http://localhost:3001/users/${user._id}/notifications`, // Assuming a dedicated notifications route
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Pass token here
+          },
+        }
+      )
+      setNotifications(response.data)
+    } catch (error) {
+      console.error('Failed to fetch notifications', error)
+    }
+  }
+
+  useEffect(() => {
     fetchNotifications()
-  }, [user._id])
+  }, [user._id, token])
 
   // Socket.io setup
   useEffect(() => {
+    if (!user._id) return // Ensure user._id exists before setting up socket
+
     const socket = io('http://localhost:3001') // Connect to the backend server
 
-    // Join the user's room using their user ID
-    socket.emit('joinRoom', user._id)
+    socket.emit('joinRoom', user._id) // Join the user's room using their user ID
 
-    // Listen for new notifications
     socket.on('newNotification', (notification) => {
       setNotifications((prevNotifications) => [
         notification,
         ...prevNotifications,
-      ]) // Add new notification to the list
+      ])
     })
 
-    // Cleanup on component unmount
     return () => {
       socket.disconnect()
     }
@@ -72,17 +73,23 @@ const Navbar = () => {
   // Toggle notification dropdown visibility
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen)
-
-    // Mark notifications as read when dropdown is opened
-    if (!isDropdownOpen) {
-      markNotificationsAsRead()
-    }
+    if (!isDropdownOpen) markNotificationsAsRead()
   }
 
   // Mark notifications as read
   const markNotificationsAsRead = async () => {
+    if (!token || !user._id) return
+
     try {
-      await axios.put(`http://localhost:3000/users/${user._id}`)
+      await axios.put(
+        `http://localhost:3001/users/${user._id}/notifications/read`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Pass token here
+          },
+        }
+      )
       setNotifications((prevNotifications) =>
         prevNotifications.map((notification) => ({
           ...notification,

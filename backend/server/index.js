@@ -31,7 +31,13 @@ app.use(helmet.crossOriginResourcePolicy({ policy: 'cross-origin' }))
 app.use(morgan('common'))
 app.use(bodyParser.json({ limit: '30mb', extended: true }))
 app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }))
-app.use(cors())
+app.use(
+  cors({
+    origin: 'http://localhost:3000', // Allow requests from this origin
+    methods: ['GET', 'POST'], // Allow these HTTP methods
+    credentials: true, // Allow cookies to be sent
+  })
+)
 app.use('/assets', express.static(path.join(__dirname, 'public/assets')))
 
 /* FILE STORAGE */
@@ -59,7 +65,13 @@ app.use('/notifications', notificationRoutes)
 const server = http.createServer(app)
 
 /* Initialize Socket.io */
-const io = new SocketIoServer(server)
+const io = new SocketIoServer(server, {
+  cors: {
+    origin: 'http://localhost:3000', // Allow Socket.IO requests from this origin
+    methods: ['GET', 'POST'], // Allow these methods for WebSocket communication
+    credentials: true, // Allow credentials (e.g., cookies)
+  },
+})
 
 initNotificationService(io)
 
