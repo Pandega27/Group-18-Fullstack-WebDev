@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { setMode, setLogout } from '../state/index.js'
-import { useNavigate } from 'react-router-dom'
-import 'bootstrap-icons/font/bootstrap-icons.css'
-import 'bootstrap/dist/js/bootstrap.bundle.min.js'
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setMode, setLogout } from "../state/index.js";
+import { useNavigate } from "react-router-dom";
+import 'bootstrap-icons/font/bootstrap-icons.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import io from 'socket.io-client'
 import axios from 'axios'
 
@@ -15,17 +15,16 @@ const Navbar = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
+  const toggleDarkMode = () => {
+    setIsDarkMode(!isDarkMode);
+    dispatch(setMode());
+  };
+
   // Access user and token from Redux store
   const user = useSelector((state) => state.user)
   const token = useSelector((state) => state.token)
   const isNonMobileScreens = window.innerWidth >= 1000
-  const fullName = user ? `${user.firstName} ${user.lastName}` : ''
-
-  // Toggle dark mode
-  const toggleDarkMode = () => {
-    setIsDarkMode(!isDarkMode)
-    dispatch(setMode())
-  }
+  const fullName = `${user.firstName} ${user.lastName}`;
 
   // Fetch notifications from the server when the component mounts
   const fetchNotifications = async () => {
@@ -48,7 +47,7 @@ const Navbar = () => {
 
   useEffect(() => {
     fetchNotifications()
-  }, [user._id, token])
+  }, )
 
   // Socket.io setup
   useEffect(() => {
@@ -102,72 +101,42 @@ const Navbar = () => {
   }
 
   return (
-    <nav
-      className={`navbar navbar-expand-lg ${
-        isDarkMode ? 'bg-light' : 'bg-dark'
-      }`}
-    >
+    <nav className={`navbar navbar-expand-lg ${isDarkMode ? "bg-light" : "bg-dark"}`}>
       <div className="container-fluid">
-        <div
-          className="navbar-brand"
-          onClick={() => navigate('/home')}
-          style={{ cursor: 'pointer' }}
-        >
-          <h1 style={{ color: '#39FF14', fontWeight: 'bold', padding: '10px' }}>
+        <div className="navbar-brand" onClick={() => navigate("/home")} style={{ cursor: "pointer" }}>
+          <h1 style={{ color: "#39FF14", fontWeight: "bold", padding: "10px" }}>
             INSTAKILO
           </h1>
         </div>
 
         {isNonMobileScreens && (
-          <form className="d-flex" role="search" style={{ gap: '1rem' }}>
-            <input
-              className="form-control me-2"
-              type="search"
-              placeholder="Search..."
-            />
-            <button
-              className="btn btn-outline-success"
-              type="submit"
-              style={{ backgroundColor: '#39FF14' }}
-            >
-              <i className="bi bi-search"></i>
+          <form className="d-flex" role="search" style={{ gap: "1rem"}}>
+            <input className="form-control me-2" type="search" placeholder="Search..." />
+            <button className="btn btn-outline-success" type="submit" style={{backgroundColor:"#39FF14"}}>
+              <i className="bi bi-search" ></i>
             </button>
           </form>
         )}
 
-        <div
-          className={`collapse navbar-collapse ${
-            isMobileMenuToggled ? 'show' : ''
-          }`}
-          id="navbarNav"
-        >
+        <div className={`collapse navbar-collapse ${isMobileMenuToggled ? "show" : ""}`} id="navbarNav">
           <ul className="navbar-nav ms-auto">
             <li className="nav-item">
               <button className="btn" onClick={toggleDarkMode}>
                 {isDarkMode ? (
-                  <i className="bi bi-sun" style={{ color: 'black' }}></i>
+                  <i className="bi bi-sun" style={{color:"black"}}></i>
                 ) : (
-                  <i className="bi bi-moon" style={{ color: 'white' }}></i>
+                  <i className="bi bi-moon" style={{color:"white"}}> </i>
                 )}
               </button>
             </li>
-            <li className="nav-item">
-              <button className="btn">
+            <li className="nav-item" >
+            <button className="btn">
                 {isDarkMode ? (
-                  <i className="bi bi-chat-dots" style={{ color: 'black' }}></i>
+                  <i className="bi bi-chat-dots" style={{color:"black"}}></i>
                 ) : (
-                  <i className="bi bi-chat-dots" style={{ color: 'white' }}></i>
+                  <i className="bi bi-chat-dots" style={{color:"white"}}> </i>
                 )}
               </button>
-            </li>
-            <li className="nav-item">
-            <button className="btn" onClick={() => navigate("/groups")}>
-                {isDarkMode ? (
-                  <i className="bi bi-people" style={{color:"black"}}></i>
-                ) : (
-                  <i className="bi bi-people" style={{color:"white"}}> </i>
-                )}
-            </button>
             </li>
             <li className="nav-item dropdown">
               <button className="btn" onClick={toggleDropdown}>
@@ -199,59 +168,32 @@ const Navbar = () => {
                   </span> // Unread notifications count
                 )}
               </button>
-
-              {isDropdownOpen && (
-                <ul
-                  className="dropdown-menu dropdown-menu-end"
-                  style={{ maxHeight: '300px', overflowY: 'auto' }}
-                >
-                  {notifications.length === 0 ? (
-                    <li className="dropdown-item">No notifications</li>
-                  ) : (
-                    notifications.map((notification, index) => (
-                      <li
-                        key={index}
-                        className={`dropdown-item ${
-                          notification.isRead ? '' : 'bg-light'
-                        }`}
-                      >
-                        {notification.message}
-                      </li>
-                    ))
-                  )}
-                </ul>
-              )}
             </li>
             <li className="nav-item">
-              <button className="btn">
+            <button className="btn" >
                 {isDarkMode ? (
-                  <i
-                    className="bi bi-question-circle"
-                    style={{ color: 'black' }}
-                  ></i>
+                  <i className="bi bi-question-circle" style={{color:"black"}}></i>
                 ) : (
-                  <i
-                    className="bi bi-question-circle"
-                    style={{ color: 'white' }}
-                  ></i>
+                  <i className="bi bi-question-circle" style={{color:"white"}}> </i>
                 )}
               </button>
             </li>
+            <li className="nav-item">
+            <button className="btn" onClick={() => navigate("/groups")}>
+                {isDarkMode ? (
+                  <i className="bi bi-people" style={{color:"black"}}></i>
+                ) : (
+                  <i className="bi bi-people" style={{color:"white"}}> </i>
+                )}
+            </button>
+            </li>
             <li className="nav-item dropdown">
-              <button
-                className="btn btn-secondary dropdown-toggle"
-                type="button"
-                data-bs-toggle="dropdown"
-                style={{ color: '#39FF14' }}
-              >
+              <button className="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" style={{color:"#39FF14"}} >
                 {fullName}
               </button>
               <ul className="dropdown-menu dropdown-menu-end">
                 <li>
-                  <button
-                    className="dropdown-item"
-                    onClick={() => dispatch(setLogout())}
-                  >
+                  <button className="dropdown-item" onClick={() => dispatch(setLogout())}>
                     Log Out
                   </button>
                 </li>
@@ -271,7 +213,7 @@ const Navbar = () => {
         )}
       </div>
     </nav>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;
