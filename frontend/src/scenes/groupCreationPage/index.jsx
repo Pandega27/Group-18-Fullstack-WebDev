@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Form, Container, Row, Col } from "react-bootstrap";
-import { CloudUpload } from "react-bootstrap-icons";
 import Navbar from "../navbar";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useSelector } from "react-redux";
-
+ 
 const GroupCreationPage = () => {
   const navigate = useNavigate();
   const token = useSelector((state) => state.token);
@@ -13,40 +12,44 @@ const GroupCreationPage = () => {
   const [location, setLocation] = useState("");
   const [description, setDescription] = useState("");
   const [rules, setRules] = useState("");
-  const [imagePreview, setImagePreview] = useState(null);
-  const [formValues, setFormValues] = useState({ visibility: "public" }); // Initialize formValues state
-
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setImagePreview(imageUrl);
-      setFormValues((prevValues) => ({
-        ...prevValues,
-        image: file
-      }));
-    }
-  };
-
+ 
+  const [formValues, setFormValues] = useState({
+    groupName: "",
+    visibility: "public",
+    tags: [],
+    location: "",
+    description: "",
+    rules: "",
+    image: null
+  });
+ 
+ 
+ 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+ 
     const formData = new FormData();
-    formData.append("groupName", groupName);
+    // formData.append("groupName", groupName);
     formData.append("visibility", formValues.visibility);
     formData.append("location", location);
     formData.append("description", description);
     formData.append("rules", rules);
-
+ 
     try {
       const response = await fetch("http://localhost:3001/groups/create-group", {
         method: "POST",
         headers: {
           "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json"
         },
-        body: formData, // Send FormData (which includes file)
+        body: JSON.stringify({
+          groupName: groupName,
+          location: location,
+          description: description,
+          rules: rules
+        }), // Send FormData (which includes file)
       });
-
+ 
       if (response.ok) {
         alert("Group created successfully!");
         navigate(`/groups/${groupName}`); // Navigate to the group page using the group name
@@ -59,7 +62,7 @@ const GroupCreationPage = () => {
       alert("Error creating group");
     }
   };
-
+ 
   return (
     <div>
       <Navbar />
@@ -79,7 +82,7 @@ const GroupCreationPage = () => {
                     onChange={(e) => setGroupName(e.target.value)}
                   />
                 </Form.Group>
-
+ 
                 <Form.Group className="mb-3 d-flex justify-content-center">
                   <Form.Check
                     type="switch"
@@ -94,24 +97,7 @@ const GroupCreationPage = () => {
                     }
                   />
                 </Form.Group>
-
-                <Form.Group className="mb-3">
-                  <Button variant="primary" as="label" htmlFor="imageUpload" className="w-100 text-dark" style={{ backgroundColor: "#39FF14" }}>
-                    <CloudUpload /> Upload Image
-                  </Button>
-                  <Form.Control
-                    type="file"
-                    id="imageUpload"
-                    hidden
-                    onChange={handleFileChange}
-                  />
-                  {imagePreview && (
-                    <div className="mt-3 text-center">
-                      <img src={imagePreview} alt="Preview" className="img-fluid" style={{ maxHeight: '200px', maxWidth: '100%' }} />
-                    </div>
-                  )}
-                </Form.Group>
-
+ 
                 <Form.Group className="mb-3">
                   <Form.Label>Location</Form.Label>
                   <Form.Control
@@ -122,7 +108,7 @@ const GroupCreationPage = () => {
                     onChange={(e) => setLocation(e.target.value)}
                   />
                 </Form.Group>
-
+ 
                 <Form.Group className="mb-3">
                   <Form.Label>Description</Form.Label>
                   <Form.Control
@@ -134,7 +120,7 @@ const GroupCreationPage = () => {
                     onChange={(e) => setDescription(e.target.value)}
                   />
                 </Form.Group>
-
+ 
                 <Form.Group className="mb-3">
                   <Form.Label>Rules</Form.Label>
                   <Form.Control
@@ -146,7 +132,7 @@ const GroupCreationPage = () => {
                     onChange={(e) => setRules(e.target.value)}
                   />
                 </Form.Group>
-
+ 
                 <Button type="submit" variant="primary" className="w-100 text-dark" style={{ backgroundColor: "#39FF14" }}>
                   Create Group
                 </Button>
@@ -158,5 +144,5 @@ const GroupCreationPage = () => {
     </div>
   );
 };
-
+ 
 export default GroupCreationPage;
