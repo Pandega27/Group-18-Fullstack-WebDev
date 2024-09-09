@@ -1,6 +1,6 @@
 import User from "../models/User.js";
 import Post from "../models/Post.js"
-
+ 
 /* CREATE */
 export const createPost = async (req, res) => {
   try {
@@ -18,14 +18,14 @@ export const createPost = async (req, res) => {
       comments: [],
     });
     await newPost.save();
-
+ 
     const post = await Post.find();
     res.status(201).json(post);
   } catch (err) {
     res.status(409).json({ message: err.message });
   }
 };
-
+ 
 /* READ */
 export const getFeedPosts = async (req, res) => {
   try {
@@ -35,7 +35,7 @@ export const getFeedPosts = async (req, res) => {
     res.status(404).json({ message: err.message });
   }
 };
-
+ 
 export const getUserPosts = async (req, res) => {
   try {
     const { userId } = req.params;
@@ -45,7 +45,7 @@ export const getUserPosts = async (req, res) => {
     res.status(404).json({ message: err.message });
   }
 };
-
+ 
 /* UPDATE */
 export const likePost = async (req, res) => {
   try {
@@ -53,21 +53,35 @@ export const likePost = async (req, res) => {
     const { userId } = req.body;
     const post = await Post.findById(id);
     const isLiked = post.likes.get(userId);
-
+ 
     if (isLiked) {
       post.likes.delete(userId);
     } else {
       post.likes.set(userId, true);
     }
-
+ 
     const updatedPost = await Post.findByIdAndUpdate(
       id,
       { likes: post.likes },
       { new: true }
     );
-
+ 
     res.status(200).json(updatedPost);
   } catch (err) {
     res.status(404).json({ message: err.message });
+  }
+};
+// In posts.js controller
+export const deletePost = async (postId, res) => {
+  try {
+    const post = await Post.findById(postId);
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+    await Post.findByIdAndRemove(postId);
+    res.status(204).send(); // No Content, successful deletion
+  } catch (error) {
+    console.error('Error deleting post:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 };

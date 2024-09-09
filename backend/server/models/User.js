@@ -27,12 +27,19 @@ const UserSchema = new mongoose.Schema(
     },
     picturePath: {
       type: String,
+      required: false,
       default: "",
     },
     friends: {
       type: Array,
       default: [],
     },
+    Admin:{
+      type:Boolean,
+      default: false,
+      required: false,
+  } 
+    ,
     location: String,
     occupation: String,
     viewedProfile: Number,
