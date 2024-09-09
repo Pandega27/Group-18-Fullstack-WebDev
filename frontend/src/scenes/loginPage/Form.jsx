@@ -195,7 +195,9 @@ const Form = () => {
                       >
                         <input {...getInputProps()} />
                         {!values.picture ? (
-                          <p style={{padding:"10px 0 0 0"}}>Add Picture Here</p>
+                          <p style={{padding:"10px 0 0 0"}}>Add Picture Here
+                          <p style={{color:"red", fontWeight:"500"}}>Required!</p>
+                          </p>
                         ) : (
                           <div className="d-flex justify-content-between">
                             <span>{values.picture.name}</span>
@@ -203,6 +205,7 @@ const Form = () => {
                           </div>
                         )}
                       </div>
+                      
                     )}
                   </Dropzone>
                 </div>

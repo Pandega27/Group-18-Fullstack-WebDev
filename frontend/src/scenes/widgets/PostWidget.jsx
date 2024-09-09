@@ -4,6 +4,7 @@ import { setPost } from "../state";
 import Friend from "../components/Friend.jsx";
 import WidgetWrapper from "../components/WidgetWrapper.jsx";
 import "../css/PostWidget.css"
+import CommentReply from "../comments/CommentReply.js";
 
 const PostWidget = ({
   postId,
@@ -20,8 +21,10 @@ const PostWidget = ({
   const dispatch = useDispatch();
   const token = useSelector((state) => state.token);
   const loggedInUserId = useSelector((state) => state.user._id);
+  const loggedInUserisAdmin = useSelector((state) => state.user.isAdmin);
   const isLiked = Boolean(likes[loggedInUserId]);
   const likeCount = Object.keys(likes).length;
+  console.log(loggedInUserId)
 
   const patchLike = async () => {
     const response = await fetch(`http://localhost:3001/posts/${postId}/like`, {
@@ -36,6 +39,29 @@ const PostWidget = ({
     dispatch(setPost({ post: updatedPost }));
   };
 
+  // Delete post function (only for admin)
+  const deletePost = async () => {
+    console.log("Attempting to delete post:", postId);
+    try {
+      const response = await fetch(`http://localhost:3001/posts/${postId}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  
+      if (response.ok) {
+        console.log("Post deleted successfully");
+        // Dispatch an action to remove the post from the Redux state
+        // dispatch(removePost(postId));
+      } else {
+        console.log("Failed to delete the post. Status:", response.status);
+      }
+    } catch (error) {
+      console.error("Error deleting the post:", error);
+    }
+  };
+  
   return (
     <div className="postwidget">
     <WidgetWrapper className="my-4">
@@ -49,7 +75,7 @@ const PostWidget = ({
         {description}
       </p>
       {picturePath && (
-        <img
+        <img 
           className="img-fluid rounded"
           alt="post"
           src={`http://localhost:3001/assets/${picturePath}`}
@@ -73,27 +99,29 @@ const PostWidget = ({
               className="btn btn-link p-0"
               onClick={() => setIsComments(!isComments)}
             >
-              <i className="bi bi-chat" style={{color:"white"}}></i>
+              <i className="bi bi-chat"></i>
             </button>
             <span>{comments.length}</span>
           </div>
         </div>
 
         <button className="btn btn-link p-0">
-          <i className="bi bi-share"></i>
-        </button>
-      </div>
-      {isComments && (
-        <div className="mt-2">
-          {comments.map((comment, i) => (
-            <div key={`${name}-${i}`}>
-              <hr />
-              <p className="text-muted m-2 pl-3">{comment}</p>
-            </div>
-          ))}
-          <hr />
+            <i className="bi bi-share"></i>
+          </button>
         </div>
-      )}
+        {isComments && (
+          <div className="mt-2">
+            <hr />
+            <CommentReply postId={postId} comments={comments} /> {/* Pass comments */}
+          </div>
+        )}
+      {/* Show delete button only if the user is an admin */}
+      {loggedInUserisAdmin &&(
+        <button className="btn btn-danger mt-2" onClick={deletePost}>
+            Delete Post{loggedInUserisAdmin}
+          </button>) }
+       
+         
     </WidgetWrapper>
     </div>
   );

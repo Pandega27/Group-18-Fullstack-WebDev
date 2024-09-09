@@ -160,6 +160,15 @@ const Navbar = () => {
                 )}
               </button>
             </li>
+            <li className="nav-item">
+            <button className="btn" onClick={() => navigate("/groups")}>
+                {isDarkMode ? (
+                  <i className="bi bi-people" style={{color:"black"}}></i>
+                ) : (
+                  <i className="bi bi-people" style={{color:"white"}}> </i>
+                )}
+            </button>
+            </li>
             <li className="nav-item dropdown">
               <button className="btn" onClick={toggleDropdown}>
                 {isDarkMode ? (
