@@ -3,11 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { Button, Card, Container, Row, Col } from "react-bootstrap";
 import Navbar from "../navbar";
 import "bootstrap/dist/css/bootstrap.min.css";
-
+ 
 const GroupListingPage = () => {
   const [groups, setGroups] = useState([]);
   const navigate = useNavigate();
-
+ 
   useEffect(() => {
     // Fetch group data from the API
     const fetchGroups = async () => {
@@ -22,10 +22,10 @@ const GroupListingPage = () => {
         console.error("Error fetching groups:", error);
       }
     };
-
+ 
     fetchGroups();
   }, []);
-
+ 
   return (
     <div>
       <Navbar />
@@ -39,10 +39,10 @@ const GroupListingPage = () => {
         >
           Create a new Group
         </Button>
-
+ 
         {/* More suggestions title */}
         <h4 className="mb-4">More suggestions</h4>
-
+ 
         {/* Group Cards */}
         <Row xs={1} sm={2} md={3} lg={4} className="g-4">
           {groups.map((group, index) => (
@@ -74,5 +74,6 @@ const GroupListingPage = () => {
     </div>
   );
 };
-
+ 
 export default GroupListingPage;
+ 
