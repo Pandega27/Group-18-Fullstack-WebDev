@@ -13,5 +13,5 @@ To Run the Backend File:
 
 1. run the terminal from the start and cd server
 2. npm i nodemon -g
-3. npm i express body-parser bcrypt cors dotenv gridfs-stream multer multer-gridfs-storage helmet morgan jsonwebtoken mongoose mongodb socket.io socket.io-client  { if theres an error type in ( npm i mongodb --force ) }
-4.. npm run dev
+3. npm i express body-parser bcrypt cors dotenv gridfs-stream multer multer-gridfs-storage helmet morgan jsonwebtoken mongoose mongodb socket.io socket.io-client  --force
+4. npm run dev
