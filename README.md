@@ -11,7 +11,8 @@ To Run the Front end File:
 
 To Run the Backend File:
 
-1. run the terminal from the start and cd server
-2. npm i nodemon -g
-3. npm i express body-parser bcrypt cors dotenv gridfs-stream multer multer-gridfs-storage helmet morgan jsonwebtoken mongoose mongodb socket.io socket.io-client  --force
-4. npm run dev
+1. run the terminal
+2. type in "cd backend/server"
+3. npm i nodemon -g
+4. npm i express body-parser bcrypt cors dotenv gridfs-stream multer multer-gridfs-storage helmet morgan jsonwebtoken mongoose mongodb socket.io socket.io-client  --force
+5. npm run dev
